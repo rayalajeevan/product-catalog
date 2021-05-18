@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String,DateTime,Float
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String,DateTime,Float,Date
 from .database import Base
 import datetime
 
@@ -13,13 +13,16 @@ class User(Base):
     first_name=Column("first_name",String(250))
     last_name=Column("last_name",String(250))
     email=Column("email",String(250))
-    password=Column("password",String(30))
+    password=Column("password",String(250))
+    date_of_birth=Column(Date)
     role=Column("role_id",Integer, ForeignKey('role.role_id'))
     created_by=Column(String(30))
     created_on=Column(DateTime(), default=datetime.datetime.now())
     updated_by=Column(String(30))
     updated_on=Column(DateTime())
     
+    def role_name(self,session):
+        return session.query(Role).filter(Role.role_id==self.role)[0]
     def cart(self,session):
         return session.query(Cart).filter(Cart.user_id==self.user_id)[0]
     

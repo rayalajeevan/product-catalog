@@ -36,4 +36,5 @@ class RegisterUser(BaseModel):
     email:str
     password:str
     role:int
+    date_of_birth:str
     

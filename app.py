@@ -6,7 +6,6 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from routers import users,views
 from fastapi.openapi.utils import get_openapi
-
 app=FastAPI()
 
 class Settings(BaseModel):
@@ -40,4 +39,5 @@ def custom_openapi():
 
 app.include_router(users.router,tags=['users'])
 app.include_router(views.router,tags=['views'])
+
 
