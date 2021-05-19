@@ -16,6 +16,7 @@ def postCategory(category:BasePostCategory,response:Response,Authorze:AuthJWT=De
     Authorze.jwt_required()
     try:
         if not get_category(category_name=category.categoryName):
+            category.created_by=Authorze.get_jwt_subject()
             create_category(category)
             return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success}
         response.status_code=status.HTTP_400_BAD_REQUEST
@@ -31,6 +32,7 @@ def updateCategory(category_id:int,category:BaseupdateCategory,response:Response
     try:
         cateObj=get_category(category_id=category_id)
         if cateObj:
+            category.updated_by=Authorze.get_jwt_subject()
             update_category(category,cateObj)
             return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success}
         response.status_code=status.HTTP_400_BAD_REQUEST
@@ -73,6 +75,7 @@ async def postProduct(product:BasePostProduct,response:Response,Authorze:AuthJWT
         if not get_product(product_name=product.productName):
             cateObj=get_category(category_name=product.categoryName)
             if cateObj:
+                product.created_by=Authorze.get_jwt_subject()
                 product.category_id=cateObj.category_id
                 del product.categoryName
                 create_product(product)
@@ -100,6 +103,7 @@ def updateProduct(product:BaseUpdateProduct,product_id:int,response:Response,Aut
                     response.status_code=status.HTTP_400_BAD_REQUEST
                     return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Category Not Found"}
             del product.categoryName
+            product.updated_by=Authorze.get_jwt_subject()
             update_product(product,prodObj)
             return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success}
         response.status_code=status.HTTP_400_BAD_REQUEST

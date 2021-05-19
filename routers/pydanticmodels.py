@@ -7,6 +7,7 @@ class BasePostProduct(BaseModel):
     quantity:float
     categoryName:str
     category_id:int=None
+    created_by:str=None
     
 class BaseUpdateProduct(BaseModel):
     productName:str=None
@@ -16,15 +17,18 @@ class BaseUpdateProduct(BaseModel):
     categoryName:str=None
     category_id:int=None
     updated_on:str=None
+    updated_by:str=None
     
 class BasePostCategory(BaseModel):
     categoryName:str
     description:str
+    created_by:str=None
     
 class BaseupdateCategory(BaseModel):
     categoryName:str=None
     description:str=None
     updated_on:str=None
+    updated_by:str=None
     
 class UserLogin(BaseModel):
     email:str
