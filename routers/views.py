@@ -22,6 +22,7 @@ def postCategory(category:BasePostCategory,response:Response,Authorze:AuthJWT=De
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Category already exists"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.put("/api/category/{category_id}")
@@ -36,6 +37,7 @@ def updateCategory(category_id:int,category:BaseupdateCategory,response:Response
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Category Not Found"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.delete("/api/category/{category_id}")
@@ -50,6 +52,7 @@ def deleteCategory(category_id:int,response:Response,Authorze:AuthJWT=Depends())
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Category Not Found"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.get("/api/product")
@@ -60,6 +63,7 @@ def getAllproducts(response:Response,Authorze:AuthJWT=Depends()):
         return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success,Statuses.count:objs.count(),Statuses.data: SerilizerMixin.serialize(objs,many=True),} 
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
   
 @router.post("/api/product")
@@ -79,6 +83,7 @@ async def postProduct(product:BasePostProduct,response:Response,Authorze:AuthJWT
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Product already exists"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.put("/api/product/{product_id}")
@@ -101,6 +106,7 @@ def updateProduct(product:BaseUpdateProduct,product_id:int,response:Response,Aut
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:f"Product not found {product_id}"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.delete("/api/product/{product_id}")
@@ -114,6 +120,7 @@ def deleteProduct(product_id:int,response:Response,Authorze:AuthJWT=Depends()):
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:f"Product not found {product_id}"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.get("/api/products/exporttopdf")
@@ -129,6 +136,7 @@ def productsExportToPdf(response:Response,Authorze:AuthJWT=Depends()):
         return FileResponse("productslist.pdf", media_type='application/octet-stream',filename="productslist.pdf")
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.get("/api/products/exporttoexcel")
@@ -140,6 +148,7 @@ def productsExportToExcel(response:Response,Authorze:AuthJWT=Depends()):
         return FileResponse("productslist.xls", media_type='application/octet-stream',filename="productslist.xls")
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
         
         

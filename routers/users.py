@@ -13,6 +13,7 @@ from utils import *
 from .pydanticmodels import *
 
 router = APIRouter()
+
 @router.post('/user/login/')
 def login(response:Response,user: UserLogin, Authorize: AuthJWT = Depends()):
     try:
@@ -30,6 +31,7 @@ def login(response:Response,user: UserLogin, Authorize: AuthJWT = Depends()):
     except Exception as exc:
         if str(exc).strip()=="":
             raise HTTPException(status_code=401,detail="Bad username or password")
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.post("/user/register/")
@@ -49,6 +51,7 @@ async def registerUser(data:RegisterUser,response:Response):
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:"Email already Exists"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.get("/user/search")
@@ -62,6 +65,7 @@ async def searchUser(response:Response,email:str=None,start:int=0,limit:int=10,A
         return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success,Statuses.count:objs.count(),Statuses.data: SerilizerMixin.serialize(objs[start:limit:],many=True,unwanted_keys=["password"],function_keys={"date_of_birth":SerilizerMixin.parseDOb})}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.get("/user/get/")
@@ -76,6 +80,7 @@ async def getUser(response:Response,Authorize:AuthJWT=Depends()):
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:f"Authentication Failed"}
     except Exception as exc:
         response.status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
 
 @router.post("/user/cart/add/{product_id}")
@@ -103,4 +108,5 @@ async def addtoCart(product_id:int,response:Response,Authorize:AuthJWT=Depends()
         response.status_code=status.HTTP_400_BAD_REQUEST
         return {Statuses.status_code:Statuses.HTTP_BAD_REQUEST,Statuses.status:Statuses.failed,Statuses.description:f"Authentication Failed"} 
     except Exception as exc:
+        ProjectUtils.print_log_msg(exc,ProjectUtils.EXCEPTION)
         return {Statuses.status_code:Statuses.HTTP_500_INTERNAL_SERVER_ERROR,Statuses.status:Statuses.exception,Statuses.description:str(exc)}
