@@ -13,7 +13,6 @@ from utils import *
 from .pydanticmodels import *
 
 router = APIRouter()
-
 @router.post('/user/login/')
 def login(response:Response,user: UserLogin, Authorize: AuthJWT = Depends()):
     try:
@@ -21,7 +20,7 @@ def login(response:Response,user: UserLogin, Authorize: AuthJWT = Depends()):
         UserObj=get_user_object(user.email)
         if UserObj:
             if ProjectUtils.authenticate_user(UserObj,user.password):
-                access_token = Authorize.create_access_token(subject=UserObj.email,expires_time=datetime.timedelta(minutes=60),user_claims={"roles":[UserObj.role_name(session).role_name]})
+                access_token = Authorize.create_access_token(subject=UserObj.email,expires_time=datetime.timedelta(days=365),user_claims={"roles":[UserObj.role_name(session).role_name]})
                 session.close()
                 response.status_code=status.HTTP_200_OK
                 return {Statuses.status_code:Statuses.HTTP_200_OK,Statuses.status:Statuses.success,"access_token": access_token,Statuses.type:Statuses.bearer}
@@ -56,7 +55,7 @@ async def registerUser(data:RegisterUser,response:Response):
 async def searchUser(response:Response,email:str=None,start:int=0,limit:int=10,Authorize:AuthJWT=Depends()):
     Authorize.jwt_required()
     try:
-        if email:
+        if str(email)==str(None):
             objs=get_all_user_objects(email)
         else:
             objs=get_all_user_objects(email)

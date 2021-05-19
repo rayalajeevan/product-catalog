@@ -18,15 +18,7 @@ class Statuses:
     HTTP_401_UNAUTHORIZED=401
 
 class ProjectUtils:
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    @staticmethod
-    def is_authenticated(Authorize):
-        try:
-            Authorize.jwt_required()
-            return True
-        except Exception as exc:
-            return False
-        
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")    
     def verify_password(plain_password, hashed_password):
         return ProjectUtils.pwd_context.verify(plain_password, hashed_password)
 
