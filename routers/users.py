@@ -20,6 +20,7 @@ def login(response:Response,user: UserLogin, Authorize: AuthJWT = Depends()):
         session=SessionLocal()
         UserObj=get_user_object(user.email)
         if UserObj:
+            x=y
             if ProjectUtils.authenticate_user(UserObj,user.password):
                 access_token = Authorize.create_access_token(subject=UserObj.email,expires_time=datetime.timedelta(days=365),user_claims={"roles":[UserObj.role_name(session).role_name]})
                 session.close()

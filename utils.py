@@ -68,10 +68,13 @@ class Logg():
         logger2.setLevel(logging.DEBUG)
         logger.setLevel(logging.DEBUG)
         formatter = logging.Formatter(fmt='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',datefmt='%m-%d-%y %H:%M:%S')
-        fh = TimedRotatingFileHandler(LOG_FILE_PATH+r"\\.log", when='D', interval=1,backupCount=45)
-        fh.namer=lambda name:name.replace(".log","").replace(".","")+".log"
+        fh = TimedRotatingFileHandler(LOG_FILE_PATH+r"\\server.log", when='D', interval=1,backupCount=45)
+        fh.namer=lambda name:name.replace("server.log","").replace(".","")+"_server.log"
         fh.setFormatter(formatter)
         logger.addHandler(fh)
+        fh2 = TimedRotatingFileHandler(LOG_FILE_PATH+r"\\application.log", when='D', interval=1,backupCount=45)
+        fh2.namer=lambda name:name.replace("application.log","").replace(".","")+"_application.log"
+        fh2.setFormatter(formatter)
         logger.addHandler(logging.StreamHandler(sys.stdout))
-        logger2.addHandler(fh)
+        logger2.addHandler(fh2)
         return logger
